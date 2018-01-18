@@ -1,7 +1,10 @@
 package singlyLinkedList;
 
+import doubleLinkedList.ProgramDoubleList;
+
 public class ProgramListTest {
     public static void main(String[] args) {
-        ProgramList programList = new ProgramList();
+//        new ProgramSingleList();
+        new ProgramDoubleList();
     }
 }

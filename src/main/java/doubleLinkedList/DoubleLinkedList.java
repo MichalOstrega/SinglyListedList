@@ -1,20 +1,21 @@
-package singlyLinkedList;
+package doubleLinkedList;
 
-public class SinglyLinkedList {
 
-    /**
-     * Nie potrzebujemy gettera ani settera, ponieważ nie chcemy
-     * aby klient programista wiedział w jaki sposób
-     * obsługujemy naszą listę.
-     */
-    private Node head;
+public class DoubleLinkedList {
 
     /**
      * Nie potrzebujemy gettera ani settera, ponieważ nie chcemy
      * aby klient programista wiedział w jaki sposób
      * obsługujemy naszą listę.
      */
-    private Node tail;
+    private DoubleNode head;
+
+    /**
+     * Nie potrzebujemy gettera ani settera, ponieważ nie chcemy
+     * aby klient programista wiedział w jaki sposób
+     * obsługujemy naszą listę.
+     */
+    private DoubleNode tail;
 
     /**
      * Nie potrzebujemy gettera ani settera, ponieważ nie chcemy
@@ -29,7 +30,7 @@ public class SinglyLinkedList {
      * @param value wartość, kótra ma zostać dodana
      */
     public void add(Integer value) {
-        Node node = new Node(value);
+        DoubleNode node = new DoubleNode(value);
         //sprawdzam, czy w naszej liście już coś jest
         if (head == null) {
             //jeżeli lista jest pusta, to dodajemy pierwszy element.
@@ -40,6 +41,7 @@ public class SinglyLinkedList {
             tail = node;
         } else {
             tail.setNext(node);
+            node.setPrev(tail);
             tail = node;
         }
         //zwiększam ilość elementów w liście.
@@ -47,7 +49,7 @@ public class SinglyLinkedList {
     }
 
     public void addfirst(Integer value) {
-        Node node = new Node(value);
+        DoubleNode node = new DoubleNode(value);
         //sprawdzam, czy w naszej liście już coś jest
         if (head == null) {
             //jeżeli lista jest pusta, to dodajemy pierwszy element.
@@ -58,6 +60,7 @@ public class SinglyLinkedList {
             tail = node;
         } else {
             node.setNext(head);
+            head.setPrev(node);
             head=node;
         }
         //zwiększam ilość elementów w liście.
@@ -68,28 +71,32 @@ public class SinglyLinkedList {
      * Metoda usuwa podany w parametrze element.
      * @param element Node, który chcemy usunąć
      */
-    public void remove(Node element) {
+    public void remove(DoubleNode element) {
 
         if (element==null){
             return;
         }
-        Node tmp = head;
-        Node prev = null;
+        DoubleNode next = head.getNext();
+        DoubleNode current = head;
+        DoubleNode prev = null;
 
-        while (tmp != null) {
-            if (tmp == element) {
+        while (current != null) {
+            if (current == element) {
                 //jeżeli head jest tym elementem, to trzeba go przesunąć
-                if (head == tmp) {
-                    head = tmp.getNext();
+                if (head == current) {
+                    head = next;
+                    head.setPrev(null);
                     size--;
                     return;
                 }
-                prev.setNext(tmp.getNext());
+                prev.setNext(next);
+                next.setPrev(prev);
                 size--;
                 return;
             } else {
-                prev = tmp;
-                tmp = tmp.getNext();
+                prev = current;
+                current = current.getNext();
+                next = current.getNext();
             }
         }
     }
@@ -103,7 +110,7 @@ public class SinglyLinkedList {
         return size;
     }
 
-    public Node getFirst() {
+    public DoubleNode getFirst() {
         return head;
     }
 
@@ -113,13 +120,13 @@ public class SinglyLinkedList {
      * @param i
      * @return
      */
-    public Node getElementAt(int i) {
+    public DoubleNode getElementAt(int i) {
         int index = 0;
         if (i>size()-1){
             System.out.println("Nie ma takiego elementu");
             return null;
         }
-        Node current = head;
+        DoubleNode current = head;
         while (index <= i) {
             if (index == i) {
                 return current;
@@ -136,11 +143,22 @@ public class SinglyLinkedList {
      * Zwraca listę z odwrotną kolejnością.
      * @return odwrócona lista.
      */
-    public SinglyLinkedList reverse(){
-        SinglyLinkedList singlyLinkedList = new SinglyLinkedList();
-        for (int i = this.size-1; i>=0 ;i--) {
-            singlyLinkedList.add(getElementAt(i).getValue());
+    public DoubleLinkedList reverse(){
+        DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+        doubleLinkedList.add(this.getElementAt(this.size()-1).getValue());
+        doubleLinkedList.head.setPrev(null);
+        doubleLinkedList.head.setNext(this.tail.getPrev());
+        DoubleNode prev=null;
+        DoubleNode current=doubleLinkedList.head;
+        DoubleNode next;
+        for (int i = this.size-2; i>=0 ;i--) {
+            prev=current;
+            current=current.getNext();
+            current.setNext(current.getPrev());
+            current.setPrev(prev);
+            next = current.getNext();
         }
-        return singlyLinkedList;
+        doubleLinkedList.tail=current;
+        return doubleLinkedList;
     }
 }

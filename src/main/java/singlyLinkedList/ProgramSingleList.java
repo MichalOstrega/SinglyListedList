@@ -2,12 +2,12 @@ package singlyLinkedList;
 
 import java.util.Scanner;
 
-public class ProgramList {
+public class ProgramSingleList {
     SinglyLinkedList singlyLinkedList = new SinglyLinkedList();
     Scanner scanner = new Scanner(System.in);
     boolean exit = false;
 
-    public ProgramList() {
+    public ProgramSingleList() {
         this.run();
     }
 
@@ -51,6 +51,7 @@ public class ProgramList {
                 }
                 case 5: {
                     exit=true;
+                    break;
                 }
                 default: {
 
