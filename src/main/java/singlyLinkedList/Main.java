@@ -22,6 +22,9 @@ public class Main {
         while (iterator.hasNext()){
             System.out.println(iterator.next());
         }
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
     }
 
     private static void printNodes(Node node) {

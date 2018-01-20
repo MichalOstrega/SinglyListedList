@@ -149,10 +149,18 @@ public class SinglyLinkedList implements Iterable<Integer> {
     @Override
     public Iterator<Integer> iterator() {
         return new Iterator<Integer>() {
+            private Node current=head;
+            private Node next=head;
 
             @Override
             public boolean hasNext() {
-                return head!=null;
+                if (next==tail){
+                    current=head;
+                    next=head;
+                    return false;
+                }
+                return current!=null;
+
             }
 
             @Override
@@ -162,10 +170,11 @@ public class SinglyLinkedList implements Iterable<Integer> {
             @Override
             public Integer next() {
                 if (hasNext()) {
-                    Node tmpNode = head;
-                    head = head.getNext();
-                    return tmpNode.getValue();
+                    next = current;
+                    current = next.getNext();
+                    return next.getValue();
                 }
+
                 return null;
             }
         };
